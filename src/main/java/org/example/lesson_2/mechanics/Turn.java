@@ -1,4 +1,4 @@
-package org.example.lesson_2.field;
+package org.example.lesson_2.mechanics;
 
 public class Turn {
     private int y;

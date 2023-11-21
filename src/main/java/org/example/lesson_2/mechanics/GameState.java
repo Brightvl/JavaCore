@@ -1,13 +1,15 @@
 package org.example.lesson_2.mechanics;
 
 import org.example.lesson_2.field.PlayingField;
+import org.example.lesson_2.players.Player;
+import org.example.lesson_2.ui.GameProcess;
 
 public class GameState {
 
     private PlayingField playingField;
     private final int WIN_COUNT;
 
-    public GameState(PlayingField playingField, int winCount) {
+    public GameState(GameProcess gameProcess, PlayingField playingField, int winCount) {
         this.playingField = playingField;
         this.WIN_COUNT = winCount;
     }
@@ -19,9 +21,8 @@ public class GameState {
      * @param s   победный слоган
      * @return результат проверки состояния игры
      */
-    public boolean checkGameState(char dot, String s) {
-        if (checkWin(dot)) {
-            playingField.setTurnCoordinate(playingField.getTurn().getX(), playingField.getTurn().getY());
+    public boolean checkGameState(int x, int y, char dot, String s) {
+        if (checkWin(x, y, dot)) {
             System.out.println(s);
             return true;
         }
@@ -53,17 +54,17 @@ public class GameState {
      * @param dot фишка игрока
      * @return признак победы
      */
-    public boolean checkWin(char dot) {
-        if (checkWinHorizontal(playingField.getTurn().getX(), playingField.getTurn().getY(), dot)) {
+    public boolean checkWin(int x, int y, char dot) {
+        if (checkWinHorizontal(x, y, dot)) {
             return true;
         }
-        if (checkWinVertical(playingField.getTurn().getX(), playingField.getTurn().getY(), dot)) {
+        if (checkWinVertical(x, y, dot)) {
             return true;
         }
-        if (checkWinDiagonalDescent(playingField.getTurn().getX(), playingField.getTurn().getY(), dot)) {
+        if (checkWinDiagonalDescent(x, y, dot)) {
             return true;
         }
-        if (checkWinDiagonalClimb(playingField.getTurn().getX(), playingField.getTurn().getY(), dot)) {
+        if (checkWinDiagonalClimb(x, y, dot)) {
             return true;
         }
         return false;

@@ -4,7 +4,7 @@ public class Human extends Player{
 
 
     public Human() {
-        super("NoName");
+        super("NoName",'X');
     }
 
     public String getName() {
@@ -14,4 +14,6 @@ public class Human extends Player{
     public void setName(String name) {
         super.setName(name);
     }
+
+
 }

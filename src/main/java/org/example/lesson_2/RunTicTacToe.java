@@ -1,12 +1,12 @@
 package org.example.lesson_2;
 
-import org.example.lesson_2.ui.GameUi;
+import org.example.lesson_2.ui.GameProcess;
 
 public class RunTicTacToe {
 
 
     public static void main(String[] args) {
-        GameUi gameUi = new GameUi(5, 5, 4);
+        GameProcess gameUi = new GameProcess(5, 5, 4);
         gameUi.run();
     }
 
