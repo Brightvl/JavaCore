@@ -92,11 +92,12 @@ public class GameState {
             // проверка влево
             if (playingField.isCellValid(x - tempXLeft, y) && playingField.isCellDot(x - tempXLeft, y, dot)) {
                 tempCountLeft++;
+                tempXLeft++;
             }
-            tempXLeft++;
+
         }
 
-        return tempCountRight + tempCountLeft >= WIN_COUNT;
+        return tempCountRight + tempCountLeft + 1 >= WIN_COUNT;
     }
 
     /**
@@ -124,7 +125,7 @@ public class GameState {
             }
         }
 
-        return tempCountUp + tempCountDown >= WIN_COUNT;
+        return tempCountUp + tempCountDown + 1 >= WIN_COUNT;
     }
 
     /**
@@ -155,7 +156,7 @@ public class GameState {
         }
 
 
-        return tempCountUp + tempCountDown >= WIN_COUNT;
+        return tempCountUp + tempCountDown + 1 >= WIN_COUNT;
     }
 
     /**
@@ -183,7 +184,7 @@ public class GameState {
                 tempDotDown++;
             }
         }
-        return tempCountUp + tempCountDown >= WIN_COUNT;
+        return tempCountUp + tempCountDown + 1 >= WIN_COUNT;
     }
 
 
