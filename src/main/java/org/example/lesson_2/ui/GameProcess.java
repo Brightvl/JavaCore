@@ -23,7 +23,7 @@ public class GameProcess {
 
     public GameProcess(int widthField, int heightFields, int winCount) {
         this.playingField = new PlayingField(widthField, heightFields);
-        this.gameState = new GameState(this, playingField, winCount);
+        this.gameState = new GameState(playingField, winCount);
         this.human = new Human();
         this.bot = new Bot();
 
@@ -65,7 +65,7 @@ public class GameProcess {
                         human.getDot(), "Вы победили!"))
 
                     break;
-//                botTurn();
+                botTurn();
                 playingField.printField();
                 if (gameState.checkGameState(bot.getTurn().getX(), bot.getTurn().getY(),
                         bot.getDot(), "Победил Автобот!"))
@@ -87,7 +87,6 @@ public class GameProcess {
             int x = scanner.nextInt() - 1;
             int y = scanner.nextInt() - 1;
             human.setTurnCoordinate(x, y);
-            System.out.printf("%d, %s",human.getTurn().getX(),human.getTurn().getY());
             if (!playingField.isCellEmpty(x, y)) {
                 System.out.println("Клетка занята");
             }
@@ -102,26 +101,24 @@ public class GameProcess {
     }
 
 
-//    /**
-//     * Ход игрока (компьютера)
-//     */
-//    private void botTurn() {
-//        int x;
-//        int y;
-//
-//        do {
-//            x = random.nextInt(playingField.getFieldSizeX());
-//            y = random.nextInt(playingField.getFieldSizeY());
-//            playingField.setTurnCoordinate(x, y);
-//        }
-//        while (!playingField.isCellEmpty(playingField.getTurn().getX(), playingField.getTurn().getY()));
-//
-//        playingField.fillTurn(y, x, playingField.getDOT_AI());
-//    }
+    /**
+     * Ход игрока (компьютера)
+     */
+    private void botTurn() {
 
 
-    public Human getHuman() {
-        return human;
+        do {
+            int x = random.nextInt(playingField.getFieldSizeX());
+            int y = random.nextInt(playingField.getFieldSizeY());
+            bot.setTurnCoordinate(x, y);
+        }
+        while (!playingField.isCellEmpty(bot.getTurn().getX(), bot.getTurn().getY()));
+
+        playingField.fillTurn(
+                bot.getTurn().getY(),
+                bot.getTurn().getX(),
+                bot.getDot());
     }
+
 
 }

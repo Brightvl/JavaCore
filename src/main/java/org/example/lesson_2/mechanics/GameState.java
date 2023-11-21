@@ -9,7 +9,7 @@ public class GameState {
     private PlayingField playingField;
     private final int WIN_COUNT;
 
-    public GameState(GameProcess gameProcess, PlayingField playingField, int winCount) {
+    public GameState(PlayingField playingField, int winCount) {
         this.playingField = playingField;
         this.WIN_COUNT = winCount;
     }

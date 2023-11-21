@@ -37,4 +37,5 @@ public abstract class Player {
     public char getDot() {
         return dot;
     }
+
 }
