@@ -11,7 +11,6 @@ public class PlayingField {
 
     private char[][] field;
 
-    private Turn turn;
 
     public PlayingField(int widthField, int heightFields) {
         this.fieldSizeX = widthField;
@@ -19,7 +18,6 @@ public class PlayingField {
 
         this.field = new char[fieldSizeY][fieldSizeX];
 
-        this.turn = new Turn();
     }
 
     /**
@@ -93,16 +91,8 @@ public class PlayingField {
         return field[y][x] == dot;
     }
 
-    public char getDOT_HUMAN() {
-        return DOT_HUMAN;
-    }
-
-    public char getDOT_AI() {
-        return DOT_AI;
-    }
-
-    public void fillTurn(int Y, int X, char dot) {
-        this.field[Y][X] = dot;
+    public void fillTurn(int y, int x, char dot) {
+        this.field[y][x] = dot;
     }
 
     public int getFieldSizeX() {
@@ -117,14 +107,7 @@ public class PlayingField {
         return field;
     }
 
-    public Turn getTurn() {
-        return turn;
-    }
 
-    public void setTurnCoordinate(int x, int y) {
-        turn.setX(x);
-        turn.setY(y);
-    }
 
 
 }

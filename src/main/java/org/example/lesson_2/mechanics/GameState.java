@@ -19,14 +19,14 @@ public class GameState {
      * @param s   победный слоган
      * @return результат проверки состояния игры
      */
-    public boolean checkGameState(char dot, String s) {
-        if (checkWin(dot)) {
-            playingField.setTurnCoordinate(playingField.getTurn().getX(), playingField.getTurn().getY());
+    public boolean checkGameState(int x, int y, char dot, String s) {
+        if (checkWin(x, y, dot)) {
             System.out.println(s);
             return true;
         }
         if (checkDraw()) {
             System.out.println("Ничья!");
+            //TODO надо придумать как сбрасывать
             return true;
         }
         return false; // Игра продолжается
@@ -53,17 +53,17 @@ public class GameState {
      * @param dot фишка игрока
      * @return признак победы
      */
-    public boolean checkWin(char dot) {
-        if (checkWinHorizontal(playingField.getTurn().getX(), playingField.getTurn().getY(), dot)) {
+    public boolean checkWin(int x, int y, char dot) {
+        if (checkWinHorizontal(x, y, dot)) {
             return true;
         }
-        if (checkWinVertical(playingField.getTurn().getX(), playingField.getTurn().getY(), dot)) {
+        if (checkWinVertical(x, y, dot)) {
             return true;
         }
-        if (checkWinDiagonalDescent(playingField.getTurn().getX(), playingField.getTurn().getY(), dot)) {
+        if (checkWinDiagonalDescent(x, y, dot)) {
             return true;
         }
-        if (checkWinDiagonalClimb(playingField.getTurn().getX(), playingField.getTurn().getY(), dot)) {
+        if (checkWinDiagonalClimb(x, y, dot)) {
             return true;
         }
         return false;
