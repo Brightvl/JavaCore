@@ -6,7 +6,7 @@ public class RunTicTacToe {
 
 
     public static void main(String[] args) {
-        GameProcess gameUi = new GameProcess(5, 5, 4);
+        GameProcess gameUi = new GameProcess(3, 3, 3);
         gameUi.run();
     }
 

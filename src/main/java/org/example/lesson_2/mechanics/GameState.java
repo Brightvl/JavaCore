@@ -1,8 +1,6 @@
 package org.example.lesson_2.mechanics;
 
 import org.example.lesson_2.field.PlayingField;
-import org.example.lesson_2.players.Player;
-import org.example.lesson_2.ui.GameProcess;
 
 public class GameState {
 
@@ -28,6 +26,7 @@ public class GameState {
         }
         if (checkDraw()) {
             System.out.println("Ничья!");
+            //TODO надо придумать как сбрасывать
             return true;
         }
         return false; // Игра продолжается

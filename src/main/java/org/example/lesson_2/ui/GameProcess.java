@@ -25,7 +25,7 @@ public class GameProcess {
         this.playingField = new PlayingField(widthField, heightFields);
         this.gameState = new GameState(playingField, winCount);
         this.human = new Human();
-        this.bot = new Bot();
+        this.bot = new Bot(this);
 
     }
 
@@ -33,6 +33,7 @@ public class GameProcess {
      * Запуск игры
      */
     public void run() {
+        // todo сделать приветствие
 //        menuWelcome();
         gameProcess();
 
@@ -54,18 +55,20 @@ public class GameProcess {
      * Игровой процесс
      */
     private void gameProcess() {
+
+        playingField.initialize();
+        playingField.printField();
         while (true) {
-            System.out.println("Имя игрока -> " + human.getName());
-            playingField.initialize();
-            playingField.printField();
             while (true) {
                 humanTurn();
+                System.out.println("Имя игрока -> " + human.getName());
                 playingField.printField();
                 if (gameState.checkGameState(human.getTurn().getX(), human.getTurn().getY(),
                         human.getDot(), "Вы победили!"))
 
                     break;
                 botTurn();
+                System.out.println("Ход бота");
                 playingField.printField();
                 if (gameState.checkGameState(bot.getTurn().getX(), bot.getTurn().getY(),
                         bot.getDot(), "Победил Автобот!"))
@@ -84,6 +87,7 @@ public class GameProcess {
         do {
             System.out.printf("Введите координаты хода X и Y (от 1 до %d)\nчерез пробел: ",
                     playingField.getFieldSizeX());
+            // TODO надо сделать нормальный ввод
             int x = scanner.nextInt() - 1;
             int y = scanner.nextInt() - 1;
             human.setTurnCoordinate(x, y);
@@ -106,19 +110,42 @@ public class GameProcess {
      */
     private void botTurn() {
 
+        if (!bot.predictionOfHumanVictory(human)) {
+            do {
+                int x = random.nextInt(playingField.getFieldSizeX());
+                int y = random.nextInt(playingField.getFieldSizeY());
+                bot.setTurnCoordinate(x, y);
+            }
+            while (!playingField.isCellEmpty(bot.getTurn().getX(), bot.getTurn().getY()));
 
-        do {
-            int x = random.nextInt(playingField.getFieldSizeX());
-            int y = random.nextInt(playingField.getFieldSizeY());
-            bot.setTurnCoordinate(x, y);
+            playingField.fillTurn(
+                    bot.getTurn().getY(),
+                    bot.getTurn().getX(),
+                    bot.getDot());
         }
-        while (!playingField.isCellEmpty(bot.getTurn().getX(), bot.getTurn().getY()));
-
-        playingField.fillTurn(
-                bot.getTurn().getY(),
-                bot.getTurn().getX(),
-                bot.getDot());
     }
 
+
+    private boolean choiceActions() {
+        // Генерируем случайное число от 0 до 99
+        int randomChance = random.nextInt(100);
+
+        // Вероятность 30% для выбора случайного действия
+        if (randomChance < 10) {
+            // Выбираем случайное действие
+            return false;
+        } else {
+            // Выполняем другое действие
+            return false;
+        }
+    }
+
+    public PlayingField getPlayingField() {
+        return playingField;
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
 
 }
