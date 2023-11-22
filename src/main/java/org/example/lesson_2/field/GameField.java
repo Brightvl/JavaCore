@@ -33,25 +33,22 @@ public class GameField {
      * Печать текущего состояния игрового поля
      */
     public void printField() {
-        System.out.print("+");
+        System.out.println("+ " + stringColor(33, " 1 2 3 4 5") + " ↔ X");
         for (int i = 0; i < fieldSizeX; i++) {
-            System.out.print(" " + (i + 1));
-        }
-        System.out.println(" ↔ X");
-
-        for (int y = 0; y < fieldSizeY; y++) {
-            System.out.print(y + 1 + "|");
-            for (int x = 0; x < fieldSizeX; x++) {
-                System.out.print(field[y][x] + "|");
+            System.out.print(stringColor(32, i + 1) + " |");
+            for (int j = 0; j < fieldSizeY; j++) {
+                if (field[i][j] == '0') {
+                    System.out.print(stringColor(34, field[i][j]) + "|");
+                } else if (field[i][j] == 'X') {
+                    System.out.print(stringColor(31, field[i][j]) + "|");
+                } else {
+                    System.out.print(field[i][j] + "|");
+                }
             }
             System.out.println();
         }
         System.out.println("↕ Y");
-        for (int i = 0; i < fieldSizeX * 2 + 2; i++) {
-            System.out.print("_");
-        }
-        System.out.println();
-
+        System.out.println("____________");
     }
 
 
@@ -106,6 +103,44 @@ public class GameField {
     }
 
 
+    /**
+     * Чтобы раскрасить консоль
+     *
+     * @param color номер цвета ANSI Escape
+     * @param s     строка текста
+     * @return
+     */
+    private String stringColor(int color, String s) {
+        StringBuilder stringBuilder = new StringBuilder("\u001B[" + color + "m" + s + "\u001B[0m");
+        return stringBuilder.toString();
+
+    }
+
+    /**
+     * Чтобы раскрасить консоль
+     *
+     * @param color номер цвета ANSI Escape
+     * @param s     char
+     * @return цветной текст
+     */
+    private String stringColor(int color, char s) {
+        StringBuilder stringBuilder = new StringBuilder("\u001B[" + color + "m" + s + "\u001B[0m");
+        return stringBuilder.toString();
+
+    }
+
+    /**
+     * Чтобы раскрасить консоль
+     *
+     * @param color номер цвета ANSI Escape
+     * @param s     char
+     * @return цветной текст
+     */
+    private String stringColor(int color, int s) {
+        StringBuilder stringBuilder = new StringBuilder("\u001B[" + color + "m" + s + "\u001B[0m");
+        return stringBuilder.toString();
+
+    }
 
 
 }

@@ -19,7 +19,7 @@ public class GameProcess {
     private final Scanner scanner = new Scanner(System.in);
     private final Random random = new Random();
 
-    private GameField playingField;
+    private GameField gameField;
     private GameState gameState;
 
     private Human human;
@@ -36,8 +36,8 @@ public class GameProcess {
      * @param winCount    Количество символов для победы.
      */
     public GameProcess(int widthField, int heightField, int winCount) {
-        this.playingField = new GameField(widthField, heightField);
-        this.gameState = new GameState(playingField, winCount);
+        this.gameField = new GameField(widthField, heightField);
+        this.gameState = new GameState(gameField, winCount);
         this.human = new Human(this);
         this.bot = new Bot(this);
         this.gameRun = true;
@@ -70,9 +70,9 @@ public class GameProcess {
      * Отображает игровой процесс, включая ходы игроков и проверку состояния игры.
      */
     private void gameUi() {
-        playingField.initialize(); // Инициализация доски
+        gameField.initialize(); // Инициализация доски
         System.out.println("Игрок: " + human.getName());
-        playingField.printField(); // Отрисовка
+        gameField.printField(); // Отрисовка
 
         while (gameRun) {
             gameProcess(); // запуск игрового процесса
@@ -85,8 +85,8 @@ public class GameProcess {
                 if (choice.equalsIgnoreCase("Y") || choice.equalsIgnoreCase("Н")) {
                     choiceDifficulty();
                 }
-                playingField.initialize();
-                playingField.printField();
+                gameField.initialize();
+                gameField.printField();
 
             } else {
                 scanner.close();
@@ -105,7 +105,7 @@ public class GameProcess {
                     human.getName(),
                     human.getTurn().getX() + 1,
                     human.getTurn().getY() + 1);
-            playingField.printField();
+            gameField.printField();
             if (gameState.checkGameState(human.getTurn().getX(), human.getTurn().getY(),
                     human.getDot(), "Вы победили!")) {
                 break;
@@ -115,7 +115,7 @@ public class GameProcess {
                     bot.getName(),
                     bot.getTurn().getX() + 1,
                     bot.getTurn().getY() + 1);
-            playingField.printField();
+            gameField.printField();
             if (gameState.checkGameState(bot.getTurn().getX(), bot.getTurn().getY(),
                     bot.getDot(), "Победил Автобот!"))
                 break;
@@ -136,8 +136,8 @@ public class GameProcess {
         bot.botTurn(human, random);
     }
 
-    public GameField getPlayingField() {
-        return playingField;
+    public GameField getGameField() {
+        return gameField;
     }
 
     public GameState getGameState() {

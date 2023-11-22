@@ -22,19 +22,19 @@ public class Human extends Player {
         while (true) {
             try {
                 System.out.printf("Введите координаты хода X и Y (от 1 до %d)\nчерез пробел: ",
-                        gameProcess.getPlayingField().getFieldSizeX());
+                        gameProcess.getGameField().getFieldSizeX());
 
                 int x = scanner.nextInt() - 1;
                 int y = scanner.nextInt() - 1;
                 super.setTurnCoordinate(x, y);
-                if (!gameProcess.getPlayingField().isCellValid(x, y)) {
+                if (!gameProcess.getGameField().isCellValid(x, y)) {
                     System.out.printf("Клетка x:%d y:%d вне диапазона\n",
                             super.getTurn().getX(),
                             super.getTurn().getY());
-                } else if (!gameProcess.getPlayingField().isCellEmpty(x, y)) {
+                } else if (!gameProcess.getGameField().isCellEmpty(x, y)) {
                     System.out.println("Клетка занята");
                 } else {
-                    gameProcess.getPlayingField().fillTurn(y, x, super.getDot());
+                    gameProcess.getGameField().fillTurn(y, x, super.getDot());
                     break;
                 }
             } catch (InputMismatchException e) {

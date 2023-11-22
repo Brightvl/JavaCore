@@ -42,12 +42,12 @@ public class Bot extends Player {
      * @return
      */
     private boolean predictVictory(Player player) {
-        for (int y = 0; y < gameProcess.getPlayingField().getFieldSizeY(); y++) {
-            for (int x = 0; x < gameProcess.getPlayingField().getFieldSizeX(); x++) {
-                if (gameProcess.getPlayingField().isCellEmpty(x, y) &&
+        for (int y = 0; y < gameProcess.getGameField().getFieldSizeY(); y++) {
+            for (int x = 0; x < gameProcess.getGameField().getFieldSizeX(); x++) {
+                if (gameProcess.getGameField().isCellEmpty(x, y) &&
                         gameProcess.getGameState().checkWin(x, y, player.getDot())) {
                     super.setTurnCoordinate(x, y);
-                    gameProcess.getPlayingField().fillTurn(super.getTurn().getY(), super.getTurn().getX(), super.getDot());
+                    gameProcess.getGameField().fillTurn(super.getTurn().getY(), super.getTurn().getX(), super.getDot());
                     return true;
                 }
             }
@@ -79,13 +79,13 @@ public class Bot extends Player {
     private void botEasy(Random random) {
 
         do {
-            int x = random.nextInt(gameProcess.getPlayingField().getFieldSizeX());
-            int y = random.nextInt(gameProcess.getPlayingField().getFieldSizeY());
+            int x = random.nextInt(gameProcess.getGameField().getFieldSizeX());
+            int y = random.nextInt(gameProcess.getGameField().getFieldSizeY());
             super.setTurnCoordinate(x, y);
         }
-        while (!gameProcess.getPlayingField().isCellEmpty(super.getTurn().getX(), super.getTurn().getY()));
+        while (!gameProcess.getGameField().isCellEmpty(super.getTurn().getX(), super.getTurn().getY()));
 
-        gameProcess.getPlayingField().fillTurn(
+        gameProcess.getGameField().fillTurn(
                 super.getTurn().getY(),
                 super.getTurn().getX(),
                 super.getDot());
@@ -100,13 +100,13 @@ public class Bot extends Player {
     private void botMiddle(Player player, Random random) {
         if (!predictionOfHumanVictory(player)) {
             do {
-                int x = random.nextInt(gameProcess.getPlayingField().getFieldSizeX());
-                int y = random.nextInt(gameProcess.getPlayingField().getFieldSizeY());
+                int x = random.nextInt(gameProcess.getGameField().getFieldSizeX());
+                int y = random.nextInt(gameProcess.getGameField().getFieldSizeY());
                 super.setTurnCoordinate(x, y);
             }
-            while (!gameProcess.getPlayingField().isCellEmpty(super.getTurn().getX(), super.getTurn().getY()));
+            while (!gameProcess.getGameField().isCellEmpty(super.getTurn().getX(), super.getTurn().getY()));
 
-            gameProcess.getPlayingField().fillTurn(
+            gameProcess.getGameField().fillTurn(
                     super.getTurn().getY(),
                     super.getTurn().getX(),
                     super.getDot());
@@ -121,13 +121,13 @@ public class Bot extends Player {
     private void botHard(Player player, Random random) {
         if (!predictionOfHumanVictory(player) && !predictionItSelfVictory()) {
             do {
-                int x = random.nextInt(gameProcess.getPlayingField().getFieldSizeX());
-                int y = random.nextInt(gameProcess.getPlayingField().getFieldSizeY());
+                int x = random.nextInt(gameProcess.getGameField().getFieldSizeX());
+                int y = random.nextInt(gameProcess.getGameField().getFieldSizeY());
                 super.setTurnCoordinate(x, y);
             }
-            while (!gameProcess.getPlayingField().isCellEmpty(super.getTurn().getX(), super.getTurn().getY()));
+            while (!gameProcess.getGameField().isCellEmpty(super.getTurn().getX(), super.getTurn().getY()));
 
-            gameProcess.getPlayingField().fillTurn(
+            gameProcess.getGameField().fillTurn(
                     super.getTurn().getY(),
                     super.getTurn().getX(),
                     super.getDot());
