@@ -26,7 +26,6 @@ public class GameState {
         }
         if (checkDraw()) {
             System.out.println("Ничья!");
-            //TODO надо придумать как сбрасывать
             return true;
         }
         return false; // Игра продолжается

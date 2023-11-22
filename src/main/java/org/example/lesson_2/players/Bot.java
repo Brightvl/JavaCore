@@ -2,15 +2,17 @@ package org.example.lesson_2.players;
 
 import org.example.lesson_2.ui.GameProcess;
 
+import java.util.Random;
+
 public class Bot extends Player {
     GameProcess gameProcess;
-
+    int levelBot;
 
     public Bot(GameProcess gameProcess) {
         super("Автобот", '0');
         this.gameProcess = gameProcess;
+        this.levelBot = 1;
     }
-
 
 
     /**
@@ -35,6 +37,7 @@ public class Bot extends Player {
 
     /**
      * Предсказание победы
+     *
      * @param player
      * @return
      */
@@ -50,5 +53,92 @@ public class Bot extends Player {
             }
         }
         return false;
+    }
+
+    /**
+     * Осуществляет ход игрока (компьютера).
+     */
+    public void botTurn(Player player, Random random) {
+        switch (levelBot) {
+            case 0 -> {
+                botEasy(random);
+            }
+            case 2 -> {
+                botHard(player, random);
+            }
+            default -> {
+                botMiddle(player, random);
+            }
+        }
+    }
+
+    /**
+     * Лёгкий уровень сложности
+     * @param random
+     */
+    private void botEasy(Random random) {
+
+        do {
+            int x = random.nextInt(gameProcess.getPlayingField().getFieldSizeX());
+            int y = random.nextInt(gameProcess.getPlayingField().getFieldSizeY());
+            super.setTurnCoordinate(x, y);
+        }
+        while (!gameProcess.getPlayingField().isCellEmpty(super.getTurn().getX(), super.getTurn().getY()));
+
+        gameProcess.getPlayingField().fillTurn(
+                super.getTurn().getY(),
+                super.getTurn().getX(),
+                super.getDot());
+
+    }
+
+    /**
+     * Средний уровень сложности
+     * @param player
+     * @param random
+     */
+    private void botMiddle(Player player, Random random) {
+        if (!predictionOfHumanVictory(player)) {
+            do {
+                int x = random.nextInt(gameProcess.getPlayingField().getFieldSizeX());
+                int y = random.nextInt(gameProcess.getPlayingField().getFieldSizeY());
+                super.setTurnCoordinate(x, y);
+            }
+            while (!gameProcess.getPlayingField().isCellEmpty(super.getTurn().getX(), super.getTurn().getY()));
+
+            gameProcess.getPlayingField().fillTurn(
+                    super.getTurn().getY(),
+                    super.getTurn().getX(),
+                    super.getDot());
+        }
+    }
+
+    /**
+     * Тяжелый уровень сложности
+     * @param player
+     * @param random
+     */
+    private void botHard(Player player, Random random) {
+        if (!predictionOfHumanVictory(player) && !predictionItSelfVictory()) {
+            do {
+                int x = random.nextInt(gameProcess.getPlayingField().getFieldSizeX());
+                int y = random.nextInt(gameProcess.getPlayingField().getFieldSizeY());
+                super.setTurnCoordinate(x, y);
+            }
+            while (!gameProcess.getPlayingField().isCellEmpty(super.getTurn().getX(), super.getTurn().getY()));
+
+            gameProcess.getPlayingField().fillTurn(
+                    super.getTurn().getY(),
+                    super.getTurn().getX(),
+                    super.getDot());
+        }
+    }
+
+    public int getLevelBot() {
+        return levelBot;
+    }
+
+    public void choiceDifficulty(int num) {
+        this.levelBot = num;
     }
 }
