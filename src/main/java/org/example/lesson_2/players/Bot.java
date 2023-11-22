@@ -12,25 +12,43 @@ public class Bot extends Player {
     }
 
 
+
     /**
-     * Определение места в котором может выиграить человек чтобы ему помешать
-     * @param human
+     * Предсказание победы соперника
+     *
+     * @param player соперник
      * @return
      */
-    public boolean predictionOfHumanVictory(Human human) {
+    public boolean predictionOfHumanVictory(Player player) {
+        return predictVictory(player);
+    }
+
+    /**
+     * Предсказание своей победы
+     *
+     * @return
+     */
+    public boolean predictionItSelfVictory() {
+        return predictVictory(this);
+    }
+
+
+    /**
+     * Предсказание победы
+     * @param player
+     * @return
+     */
+    private boolean predictVictory(Player player) {
         for (int y = 0; y < gameProcess.getPlayingField().getFieldSizeY(); y++) {
             for (int x = 0; x < gameProcess.getPlayingField().getFieldSizeX(); x++) {
-                if (gameProcess.getPlayingField().isCellEmpty(x, y) && gameProcess.getGameState().checkWin(x, y,
-                        human.getDot())) {
+                if (gameProcess.getPlayingField().isCellEmpty(x, y) &&
+                        gameProcess.getGameState().checkWin(x, y, player.getDot())) {
                     super.setTurnCoordinate(x, y);
-                    gameProcess.getPlayingField().fillTurn(super.getTurn().getY(), super.getTurn().getX(),
-                            super.getDot());
+                    gameProcess.getPlayingField().fillTurn(super.getTurn().getY(), super.getTurn().getX(), super.getDot());
                     return true;
                 }
             }
         }
         return false;
     }
-
-
 }

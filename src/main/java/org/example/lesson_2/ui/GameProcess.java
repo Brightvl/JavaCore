@@ -1,42 +1,55 @@
 package org.example.lesson_2.ui;
 
 import org.example.lesson_2.mechanics.GameState;
-import org.example.lesson_2.field.PlayingField;
+import org.example.lesson_2.field.GameField;
 import org.example.lesson_2.players.Bot;
 import org.example.lesson_2.players.Human;
 
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
-public class GameProcess {
 
+/**
+ * Класс отвечает за управление игровым процессом, включая ходы игроков, отображение игрового интерфейса и обработку
+ * состояний игры.
+ */
+public class GameProcess {
 
     private final Scanner scanner = new Scanner(System.in);
     private final Random random = new Random();
 
-    private PlayingField playingField;
+    private GameField playingField;
     private GameState gameState;
 
     private Human human;
     private Bot bot;
 
+    private boolean gameRun;
 
-    public GameProcess(int widthField, int heightFields, int winCount) {
-        this.playingField = new PlayingField(widthField, heightFields);
+
+    /**
+     * Конструктор класса
+     *
+     * @param widthField  Ширина игрового поля.
+     * @param heightField Высота игрового поля.
+     * @param winCount    Количество символов для победы.
+     */
+    public GameProcess(int widthField, int heightField, int winCount) {
+        this.playingField = new GameField(widthField, heightField);
         this.gameState = new GameState(playingField, winCount);
         this.human = new Human();
         this.bot = new Bot(this);
+        this.gameRun = true;
 
     }
 
     /**
-     * Запуск игры
+     * Запускает игру
      */
-    public void run() {
-        // todo сделать приветствие
-//        menuWelcome();
-        gameProcess();
-
+    public void runGame() {
+        menuWelcome();
+        gameUi();
     }
 
     /**
@@ -52,64 +65,84 @@ public class GameProcess {
     }
 
     /**
-     * Игровой процесс
+     * Отображает игровой процесс, включая ходы игроков и проверку состояния игры.
+     */
+    private void gameUi() {
+        playingField.initialize(); // Инициализация доски
+        System.out.println("Игрок: " + human.getName());
+        playingField.printField(); // Отрисовка
+
+        while (gameRun) {
+            gameProcess(); // запуск игрового процесса
+
+            System.out.print("Желаете сыграть еще раз? (Y - да): ");
+            String choice = scanner.next();
+            if (choice.equalsIgnoreCase("Y") || choice.equalsIgnoreCase("Н")) {
+                playingField.initialize();
+                playingField.printField();
+            } else {
+                scanner.close();
+                this.gameRun = false;
+            }
+        }
+    }
+
+    /**
+     * Запускает игровой процесс
      */
     private void gameProcess() {
-
-        playingField.initialize();
-        playingField.printField();
         while (true) {
-            while (true) {
-                humanTurn();
-                System.out.println("Имя игрока -> " + human.getName());
-                playingField.printField();
-                if (gameState.checkGameState(human.getTurn().getX(), human.getTurn().getY(),
-                        human.getDot(), "Вы победили!"))
-
-                    break;
-                botTurn();
-                System.out.println("Ход бота");
-                playingField.printField();
-                if (gameState.checkGameState(bot.getTurn().getX(), bot.getTurn().getY(),
-                        bot.getDot(), "Победил Автобот!"))
-                    break;
+            humanTurn(); // ход игрока
+            System.out.println("Игрок: " + human.getName());
+            playingField.printField();
+            if (gameState.checkGameState(human.getTurn().getX(), human.getTurn().getY(),
+                    human.getDot(), "Вы победили!")) {
+                break;
             }
-            System.out.print("Желаете сыграть еще раз? (Y - да): ");
-            if (!scanner.next().equalsIgnoreCase("Y"))
+            botTurn(); // ход бота
+            System.out.println("Игрок: " + bot.getName());
+            playingField.printField();
+            if (gameState.checkGameState(bot.getTurn().getX(), bot.getTurn().getY(),
+                    bot.getDot(), "Победил Автобот!"))
                 break;
         }
     }
 
     /**
-     * Ход игрока (человека)
+     * Осуществляет ход игрока (человека), запрашивая координаты и проверяя их корректность.
      */
     private void humanTurn() {
-        do {
-            System.out.printf("Введите координаты хода X и Y (от 1 до %d)\nчерез пробел: ",
-                    playingField.getFieldSizeX());
-            // TODO надо сделать нормальный ввод
-            int x = scanner.nextInt() - 1;
-            int y = scanner.nextInt() - 1;
-            human.setTurnCoordinate(x, y);
-            if (!playingField.isCellEmpty(x, y)) {
-                System.out.println("Клетка занята");
+        while (true) {
+            try {
+                System.out.printf("Введите координаты хода X и Y (от 1 до %d)\nчерез пробел: ",
+                        playingField.getFieldSizeX());
+
+                int x = scanner.nextInt() - 1;
+                int y = scanner.nextInt() - 1;
+                human.setTurnCoordinate(x, y);
+
+                if (!playingField.isCellValid(x, y)) {
+                    System.out.println("Клетка вне диапазона");
+                } else if (!playingField.isCellEmpty(x, y)) {
+                    System.out.println("Клетка занята");
+                } else {
+                    playingField.fillTurn(y, x, human.getDot());
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Пожалуйста, введите целые числа.");
+                scanner.nextLine(); // очистить буфер ввода
             }
         }
-        while (!playingField.isCellValid(human.getTurn().getX(), human.getTurn().getY()) ||
-                !playingField.isCellEmpty(human.getTurn().getX(), human.getTurn().getY()));
-
-        playingField.fillTurn(
-                human.getTurn().getY(),
-                human.getTurn().getX(),
-                human.getDot());
     }
 
 
     /**
-     * Ход игрока (компьютера)
+     * Осуществляет ход игрока (компьютера).
      */
     private void botTurn() {
 
+        // todo усложнить логику бота метод написан в нем
         if (!bot.predictionOfHumanVictory(human)) {
             do {
                 int x = random.nextInt(playingField.getFieldSizeX());
@@ -125,22 +158,7 @@ public class GameProcess {
         }
     }
 
-
-    private boolean choiceActions() {
-        // Генерируем случайное число от 0 до 99
-        int randomChance = random.nextInt(100);
-
-        // Вероятность 30% для выбора случайного действия
-        if (randomChance < 10) {
-            // Выбираем случайное действие
-            return false;
-        } else {
-            // Выполняем другое действие
-            return false;
-        }
-    }
-
-    public PlayingField getPlayingField() {
+    public GameField getPlayingField() {
         return playingField;
     }
 

@@ -1,13 +1,13 @@
 package org.example.lesson_2.mechanics;
 
-import org.example.lesson_2.field.PlayingField;
+import org.example.lesson_2.field.GameField;
 
 public class GameState {
 
-    private PlayingField playingField;
+    private GameField playingField;
     private final int WIN_COUNT;
 
-    public GameState(PlayingField playingField, int winCount) {
+    public GameState(GameField playingField, int winCount) {
         this.playingField = playingField;
         this.WIN_COUNT = winCount;
     }
@@ -178,8 +178,8 @@ public class GameState {
                 tempDotUp++;
             }
             // проверка диагональ ↙
-            if (playingField.isCellValid(x + tempDotDown, y - tempDotDown) && playingField.isCellDot(x + tempDotDown,
-                    y - tempDotDown, dot)) {
+            if (playingField.isCellValid(x - tempDotDown, y + tempDotDown) && playingField.isCellDot(x - tempDotDown,
+                    y + tempDotDown, dot)) {
                 tempCountDown++;
                 tempDotDown++;
             }

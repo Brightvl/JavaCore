@@ -1,9 +1,7 @@
 package org.example.lesson_2.field;
 
-public class PlayingField {
+public class GameField {
 
-    private final char DOT_HUMAN = 'X';
-    private final char DOT_AI = '0';
     private final char DOT_EMPTY = '*';
 
     private int fieldSizeX;
@@ -12,7 +10,7 @@ public class PlayingField {
     private char[][] field;
 
 
-    public PlayingField(int widthField, int heightFields) {
+    public GameField(int widthField, int heightFields) {
         this.fieldSizeX = widthField;
         this.fieldSizeY = heightFields;
 

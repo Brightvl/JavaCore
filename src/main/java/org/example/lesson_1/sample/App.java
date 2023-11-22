@@ -49,8 +49,8 @@ import org.example.lesson_1.other_class.OtherClass;
  * docker build . -t mycalcapp:v1
  * <p>
  *     Запускаем контейнер
- * docker run mycalcapp:v1
- * docker run --rm mycalcapp:v1 // чтобы сразу удалялся после запуска
+ * docker runGame mycalcapp:v1
+ * docker runGame --rm mycalcapp:v1 // чтобы сразу удалялся после запуска
  */
 public class App {
     /**
