@@ -148,7 +148,7 @@ public class GameProcess {
     /**
      * Выбор сложности
      */
-    public boolean choiceDifficulty() {
+    private boolean choiceDifficulty() {
         System.out.println("""
                 Уровень сложности компьютера:
                 1. Глупая железяка

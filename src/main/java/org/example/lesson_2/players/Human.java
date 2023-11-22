@@ -28,7 +28,9 @@ public class Human extends Player {
                 int y = scanner.nextInt() - 1;
                 super.setTurnCoordinate(x, y);
                 if (!gameProcess.getPlayingField().isCellValid(x, y)) {
-                    System.out.println("Клетка вне диапазона");
+                    System.out.printf("Клетка x:%d y:%d вне диапазона\n",
+                            super.getTurn().getX(),
+                            super.getTurn().getY());
                 } else if (!gameProcess.getPlayingField().isCellEmpty(x, y)) {
                     System.out.println("Клетка занята");
                 } else {
