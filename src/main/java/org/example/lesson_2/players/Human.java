@@ -9,6 +9,7 @@ public class Human extends Player {
 
 
     GameProcess gameProcess;
+
     public Human(GameProcess gameProcess) {
         super("NoName", 'X');
         this.gameProcess = gameProcess;
@@ -26,7 +27,6 @@ public class Human extends Player {
                 int x = scanner.nextInt() - 1;
                 int y = scanner.nextInt() - 1;
                 super.setTurnCoordinate(x, y);
-
                 if (!gameProcess.getPlayingField().isCellValid(x, y)) {
                     System.out.println("Клетка вне диапазона");
                 } else if (!gameProcess.getPlayingField().isCellEmpty(x, y)) {

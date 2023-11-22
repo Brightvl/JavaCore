@@ -101,14 +101,20 @@ public class GameProcess {
     private void gameProcess() {
         while (true) {
             humanTurn(); // ход игрока
-            System.out.println("Игрок: " + human.getName());
+            System.out.printf("Игрок: %s, метка x:%d y:%d\n",
+                    human.getName(),
+                    human.getTurn().getX() + 1,
+                    human.getTurn().getY() + 1);
             playingField.printField();
             if (gameState.checkGameState(human.getTurn().getX(), human.getTurn().getY(),
                     human.getDot(), "Вы победили!")) {
                 break;
             }
             botTurn(); // ход бота
-            System.out.printf("Игрок: %s Сложность: %s\n", bot.getName(), showDifficult());
+            System.out.printf("Игрок: %s, метка x:%d y:%d\n",
+                    bot.getName(),
+                    bot.getTurn().getX() + 1,
+                    bot.getTurn().getY() + 1);
             playingField.printField();
             if (gameState.checkGameState(bot.getTurn().getX(), bot.getTurn().getY(),
                     bot.getDot(), "Победил Автобот!"))
@@ -146,8 +152,8 @@ public class GameProcess {
         System.out.println("""
                 Уровень сложности компьютера:
                 1. Глупая железяка
-                2. Доставит трудности
-                3. Кажется у него есть разум
+                2. Кажется у него есть разум
+                3. Доставит трудности
                 Введите номер: """);
         try {
             int choice = scanner.nextInt() - 1;
@@ -156,6 +162,7 @@ public class GameProcess {
                         showDifficult());
             } else {
                 bot.choiceDifficulty(choice);
+                System.out.printf("Выбрана сложность: %s\n", showDifficult());
                 return true;
             }
         } catch (InputMismatchException e) {
@@ -165,6 +172,9 @@ public class GameProcess {
         return false;
     }
 
+    /**
+     * @return уровень сложности текстом
+     */
     private String showDifficult() {
         String difficult;
         switch (bot.getLevelBot()) {
@@ -172,10 +182,10 @@ public class GameProcess {
                 difficult = "Глупая железяка";
             }
             case 2 -> {
-                difficult = "Кажется у него есть разум";
+                difficult = "Доставит трудности";
             }
             default -> {
-                difficult = "Доставит трудности";
+                difficult = "Кажется у него есть разум";
             }
         }
         return difficult;
