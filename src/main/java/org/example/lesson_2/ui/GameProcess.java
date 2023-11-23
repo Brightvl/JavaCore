@@ -4,6 +4,7 @@ import org.example.lesson_2.field.GameField;
 import org.example.lesson_2.mechanics.GameState;
 import org.example.lesson_2.players.Bot;
 import org.example.lesson_2.players.Human;
+import org.example.lesson_2.players.Player;
 
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -22,6 +23,7 @@ public class GameProcess {
     private GameField gameField;
     private GameState gameState;
 
+    private Colorer colorer;
     private Human human;
     private Bot bot;
 
@@ -38,8 +40,11 @@ public class GameProcess {
     public GameProcess(int widthField, int heightField, int winCount) {
         this.gameField = new GameField(widthField, heightField);
         this.gameState = new GameState(gameField, winCount);
+
+        this.colorer = new Colorer();
         this.human = new Human(this);
         this.bot = new Bot(this);
+
         this.gameRun = true;
 
     }
@@ -71,7 +76,7 @@ public class GameProcess {
      */
     private void gameUi() {
         gameField.initialize(); // Инициализация доски
-        System.out.println("Игрок: " + human.getName());
+        System.out.println("Игрок: " + colorer.stringColor(31, human.getName()));
         gameField.printField(); // Отрисовка
 
         while (gameRun) {
@@ -101,25 +106,25 @@ public class GameProcess {
     private void gameProcess() {
         while (true) {
             humanTurn(); // ход игрока
-            System.out.printf("Игрок: %s, метка x:%d y:%d\n",
-                    human.getName(),
-                    human.getTurn().getX() + 1,
-                    human.getTurn().getY() + 1);
+            System.out.println(showNameAndCoordinate(human));
             gameField.printField();
             if (gameState.checkGameState(human.getTurn().getX(), human.getTurn().getY(),
-                    human.getDot(), "Вы победили!")) {
+                    human.getDot(), human.getName() + ", вы победили!")) {
                 break;
             }
             botTurn(); // ход бота
-            System.out.printf("Игрок: %s, метка x:%d y:%d\n",
-                    bot.getName(),
-                    bot.getTurn().getX() + 1,
-                    bot.getTurn().getY() + 1);
+            System.out.println(showNameAndCoordinate(bot));
             gameField.printField();
             if (gameState.checkGameState(bot.getTurn().getX(), bot.getTurn().getY(),
-                    bot.getDot(), "Победил Автобот!"))
+                    bot.getDot(), "Победил " + bot.getName()))
                 break;
         }
+    }
+
+    private String showNameAndCoordinate(Player player) {
+        return "Игрок: " + player.getName() +
+                ", метка x:" + (player.getTurn().getX() + 1) +
+                " y:" + (player.getTurn().getY() + 1);
     }
 
     /**
