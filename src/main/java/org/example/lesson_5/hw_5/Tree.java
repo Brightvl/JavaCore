@@ -2,22 +2,18 @@ package org.example.lesson_5.hw_5;
 
 import java.io.File;
 
-/**
- * Доработайте класс Tree и метод print который мы разработали на семинаре. Ваш метод должен распечатать полноценное дерево директорий и файлов относительно корневой директории.
- */
 public class Tree {
 
     public static void main(String[] args) {
-        print(new File("."), "", true);
+        print(new File("src/main/java/org/example/"), "", true);
     }
 
-    static void print(File file, String indent, boolean isLast){
+    static void print(File file, String indent, boolean isLast) {
         System.out.print(indent);
-        if (isLast){
+        if (isLast) {
             System.out.print("└─");
             indent += "  ";
-        }
-        else {
+        } else {
             System.out.print("├─");
             indent += "│ ";
         }
@@ -27,18 +23,8 @@ public class Tree {
         if (files == null)
             return;
 
-        int subDirTotal = 0;
-        for (int i = 0; i < files.length; i++){
-            if (files[i].isDirectory())
-                subDirTotal++;
-        }
-
-        int subDirCounter = 0;
-        for (int i = 0; i < files.length; i++){
-            if (files[i].isDirectory()){
-                print(files[i], indent, subDirTotal == ++subDirCounter);
-            }
+        for (int i = 0; i < files.length; i++) {
+            print(files[i], indent, i == files.length - 1);
         }
     }
-
 }
